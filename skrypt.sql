@@ -2,10 +2,17 @@
 /*  Usuniêcie tabel stworzonych przez skrypt  */
 /*============================================*/
 
-DROP TABLE contract_types CASCADE CONSTRAINTS;  -- Usuniêcie tabeli contract_types wraz ze wszystkimi ograniczeniami integralnoœciowymi
-DROP TABLE contracts CASCADE CONSTRAINTS;       -- Usuniêcie tabeli contracts wraz ze wszystkimi ograniczeniami integralnoœciowymi
-DROP TABLE employees CASCADE CONSTRAINTS;       -- Usuniêcie tabeli employees wraz ze wszystkimi ograniczeniami integralnoœciowymi
-DROP TABLE customers CASCADE CONSTRAINTS;       -- Usuniêcie tabeli customers wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE contract_types CASCADE CONSTRAINTS;      -- Usuniêcie tabeli contract_types wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE contracts CASCADE CONSTRAINTS;           -- Usuniêcie tabeli contracts wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE employees CASCADE CONSTRAINTS;           -- Usuniêcie tabeli employees wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE customers CASCADE CONSTRAINTS;           -- Usuniêcie tabeli customers wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE service_types CASCADE CONSTRAINTS;       -- Usuniêcie tabeli service_types wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE status_types CASCADE CONSTRAINTS;        -- Usuniêcie tabeli status_types wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE services CASCADE CONSTRAINTS;            -- Usuniêcie tabeli services wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE pricings CASCADE CONSTRAINTS;            -- Usuniêcie tabeli pricings wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE product_categories CASCADE CONSTRAINTS;  -- Usuniêcie tabeli product_categories wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE item_orders CASCADE CONSTRAINTS;         -- Usuniêcie tabeli item_orders wraz ze wszystkimi ograniczeniami integralnoœciowymi
+
 
 /*============================================*/
 /*           Tworzenie nowych tabel           */
@@ -161,3 +168,189 @@ CREATE TABLE customers
     CONSTRAINT customers_email_uq       UNIQUE (email),
     CONSTRAINT customers_email_chk1     CHECK ( REGEXP_LIKE(email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$') )
 );
+
+/*
+    Utworzenie tabeli service_types
+    
+    Pola tabeli:
+        id      liczba      identyfikator
+        name    napis       nazwa czynnoœci serwisowej
+        
+    Ograniczenia integralnoœciowe:
+        id          klucz g³ówny
+        name        nie mo¿e byæ pusty (NOT NULL),
+                    musi byæ unikalny (UNIQUE)
+*/
+
+CREATE TABLE service_types
+(
+    id      NUMBER,
+    name    VARCHAR(50)     NOT NULL,
+    
+    CONSTRAINT service_types_pk         PRIMARY KEY (id),
+    CONSTRAINT service_types_name_uq    UNIQUE (name)
+);
+
+/*
+    Utworzenie tabeli status_types
+    
+    Pola tabeli:
+        id      liczba      identyfikator
+        name    napis       nazwa statusu
+        
+    Ograniczenia integralnoœciowe:
+        id          klucz g³ówny
+        name        nie mo¿e byæ pusty (NOT NULL),
+                    musi byæ unikalny (UNIQUE)
+*/
+
+CREATE TABLE status_types
+(
+    id      NUMBER,
+    name    VARCHAR(50)     NOT NULL,
+    
+    CONSTRAINT status_types_pk         PRIMARY KEY (id),
+    CONSTRAINT status_types_name_uq    UNIQUE (name)
+);
+
+/*
+    Utworzenie tabeli services
+    
+    Pola tabeli:
+        id                      liczba      identyfikator
+        service_type            liczba      identyfikator typu czynnoœci serwisowej z tabeli service_types
+        employee_id             liczba      identyfikator pracownika odpowiedzialnego za dan¹ czynnoœæ serwisow¹
+        customer_id             liczba      identyfikator klienta, który zg³osi³ potrzebê serwisu
+        created_at              date        data zg³oszenia serwisu
+        status                  liczba      identyfikator statusu serwisu z tabeli status_types
+        customer_description    napis       opis usterki lub czynnoœci serwisowej do wykonania
+        service_description     napis       opis przeprowadzonych czynnoœci przez serwisanta
+        
+    Ograniczenia integralnoœciowe:
+        id                      klucz g³ówny
+        service_type            klucz obcy,
+                                nie mo¿e byæ pusty (NOT NULL)
+        employee_id             klucz obcy,
+                                nie mo¿e byæ pusty (NOT NULL)
+        customer_id             klucz obcy,
+                                nie mo¿e byæ pusty (NOT NULL)
+        created_at              nie mo¿e byæ pusty (NOT NULL),
+        status                  klucz obcy,
+                                nie mo¿e byæ pusty (NOT NULL)
+        customer_description    nie mo¿e byæ pusty (NOT NULL)
+        service_description     
+*/
+
+CREATE TABLE services
+(
+    id                      NUMBER,
+    service_type            NUMBER          NOT NULL,
+    employee_id             NUMBER          NOT NULL,
+    customer_id             NUMBER          NOT NULL,
+    created_at              DATE            NOT NULL,
+    status                  NUMBER          NOT NULL,
+    customer_description    VARCHAR(4000)   NOT NULL,
+    service_description     VARCHAR(4000),
+    
+    CONSTRAINT services_pk      PRIMARY KEY (id),
+    CONSTRAINT services_fk1     FOREIGN KEY (service_type) REFERENCES service_types (id),
+    CONSTRAINT services_fk2     FOREIGN KEY (employee_id) REFERENCES employees (id),
+    CONSTRAINT services_fk3     FOREIGN KEY (customer_id) REFERENCES customers (id),
+    CONSTRAINT services_fk4     FOREIGN KEY (status) REFERENCES status_types (id)
+);
+
+/*
+    Utworzenie tabeli pricings
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        service_id      liczba      identyfikator serwisu, do którego nale¿y rekord wyceny czynnoœci serwisowej
+        value           liczba      cena czynnoœci serwisowej
+        description     napis       krótki opis czynnoœci serwisowej
+        
+    Ograniczenia integralnoœciowe:
+        id              klucz g³ówny
+        service_id      klucz obcy
+                        nie mo¿e byæ pusty (NOT NULL)
+        value           nie mo¿e byæ pusty (NOT NULL)
+        description     nie mo¿e byæ pusty (NOT NULL)
+*/
+
+CREATE TABLE pricings
+(
+    id              NUMBER,
+    service_id      NUMBER          NOT NULL,
+    value           NUMBER(7,2)     NOT NULL,
+    description     VARCHAR(150)    NOT NULL,
+    
+    CONSTRAINT pricings_pk      PRIMARY KEY (id),
+    CONSTRAINT pricings_fk1     FOREIGN KEY (service_id) REFERENCES services (id)
+);
+
+/*
+    Utworzenie tabeli product_categories
+    
+    Pola tabeli:
+        id      liczba      identyfikator
+        name    napis       nazwa kategorii
+        
+    Ograniczenia integralnoœciowe:
+        id          klucz g³ówny
+        name        nie mo¿e byæ pusty (NOT NULL),
+                    musi byæ unikalny (UNIQUE)
+*/
+
+CREATE TABLE product_categories
+(
+    id      NUMBER,
+    name    VARCHAR(50)     NOT NULL,
+    
+    CONSTRAINT product_categories_pk         PRIMARY KEY (id),
+    CONSTRAINT product_categories_name_uq    UNIQUE (name)
+);
+
+/*
+    Utworzenie tabeli item_orders
+    
+    Pola tabeli:
+        id                  liczba      identyfikator
+        service_id          liczba      identyfikator serwisu, do którego nale¿y rekord zamówienia czêœci
+        product_name        napis       nazwa produktu
+        product_category    liczba      identyfikator kategorii z tabeli product_categories
+        quantity            liczba      liczba sztuk produktu
+        unit_price          liczba      cena za sztukê
+        
+    Ograniczenia integralnoœciowe:
+        id                  klucz g³ówny
+        service_id          klucz obcy,
+                            nie mo¿e byæ pusty (NOT NULL)
+        product_name        nie mo¿e byæ pusty (NOT NULL)
+        product_category    klucz obcy,
+                            nie mo¿e byæ pusty (NOT NULL)
+        quantity            nie mo¿e byæ pusty (NOT NULL)
+        unit_price          nie mo¿e byæ pusty (NOT NULL)
+*/
+
+CREATE TABLE item_orders
+(
+    id NUMBER,
+    service_id          NUMBER          NOT NULL,
+    product_name        VARCHAR(150)    NOT NULL,
+    product_category    NUMBER          NOT NULL,
+    quantity            NUMBER          NOT NULL,
+    unit_price          NUMBER          NOT NULL,
+    
+    CONSTRAINT item_orders_pk       PRIMARY KEY (id),
+    CONSTRAINT item_orders_pk_fk1   FOREIGN KEY (service_id) REFERENCES services (id),
+    CONSTRAINT item_orders_pk_fk2   FOREIGN KEY (product_category) REFERENCES product_categories (id)
+);
+
+
+
+
+
+
+
+
+
+
