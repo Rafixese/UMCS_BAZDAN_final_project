@@ -4,6 +4,8 @@
 
 DROP TABLE contract_types CASCADE CONSTRAINTS;  -- Usuniêcie tabeli contract_types wraz ze wszystkimi ograniczeniami integralnoœciowymi
 DROP TABLE contracts CASCADE CONSTRAINTS;       -- Usuniêcie tabeli contracts wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE employees CASCADE CONSTRAINTS;       -- Usuniêcie tabeli employees wraz ze wszystkimi ograniczeniami integralnoœciowymi
+DROP TABLE customers CASCADE CONSTRAINTS;       -- Usuniêcie tabeli customers wraz ze wszystkimi ograniczeniami integralnoœciowymi
 
 /*============================================*/
 /*           Tworzenie nowych tabel           */
@@ -121,4 +123,41 @@ CREATE TABLE employees
     CONSTRAINT employees_fk1            FOREIGN KEY (manager_id) REFERENCES employees (id),
     CONSTRAINT employees_fk2            FOREIGN KEY (contract_id) REFERENCES contracts (id),
     CONSTRAINT employees_contract_id_uq UNIQUE (contract_id)
+);
+
+/*
+    Utworzenie tabeli customers
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        first_name      napis       imiê klienta
+        last_name       napis       nazwisko klienta
+        phone           napis       numer telefonu
+        email           napis       adres email
+        
+    Ograniczenia integralnoœciowe:
+        id              klucz g³ówny
+        first_name      nie mo¿e byæ pusty (NOT NULL)
+        last_name       nie mo¿e byæ pusty (NOT NULL)
+        phone           nie mo¿e byæ pusty (NOT NULL),
+                        musi byæ unikalny (UNIQUE)
+                        musi sk³adaæ siê tylko z cyfr (CHECK)
+        email           nie mo¿e byæ pusty (NOT NULL),
+                        musi byæ unikalny (UNIQUE),
+                        musi pasowaæ do wyra¿enia regularnego '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$'
+*/
+
+CREATE TABLE customers
+(
+    id              NUMBER,
+    first_name      VARCHAR(30)     NOT NULL,
+    last_name       VARCHAR(50)     NOT NULL,
+    phone           VARCHAR(9)      NOT NULL,
+    email           VARCHAR(50)     NOT NULL,
+    
+    CONSTRAINT customers_pk             PRIMARY KEY (id),
+    CONSTRAINT customers_phone_uq       UNIQUE (phone),
+    CONSTRAINT customers_phone_chk1     CHECK ( REGEXP_LIKE(phone, '^[0-9]{9}$') ),
+    CONSTRAINT customers_email_uq       UNIQUE (email),
+    CONSTRAINT customers_email_chk1     CHECK ( REGEXP_LIKE(email, '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$') )
 );
