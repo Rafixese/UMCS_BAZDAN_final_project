@@ -850,18 +850,347 @@ VALUES (product_categories_seq.nextval,'Napêdy optyczne');
 INSERT INTO product_categories  (id, name) 
 VALUES (product_categories_seq.nextval,'Obudowy dysków');
 
+INSERT INTO product_categories  (id, name) 
+VALUES (product_categories_seq.nextval,'Akcesoria GSM');
 
+/*
+    Uzupe³nienie tabeli SERVICES przyk³adowymi danymi
+*/
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    3,
+    10,
+    1,
+    TO_DATE('10-03-2020', 'DD-MM-YYYY'),
+    10,
+    'Przegrzewanie procesora, wystêpuje równie¿ gdy komputer jest bezczynny.',
+    'Brak pasty termoprzewodz¹cej pod uk³adem ch³odzenia, za³o¿ono now¹ pastê'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    7,
+    9,
+    2,
+    TO_DATE('20-03-2020', 'DD-MM-YYYY'),
+    10,
+    'Polecenie za³o¿enia folii ochronnej na ekran telefonu',
+    'Za³o¿ono foliê na ekran telefonu'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    4,
+    8,
+    3,
+    TO_DATE('1-04-2020', 'DD-MM-YYYY'),
+    10,
+    'Od czasu zainstalowania i uruchomienia programu d0nt_0pen_this.exe system Windows przesta³ siê w³¹czaæ.',
+    'Wykonano reinstalacje systemu Windows 10.'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    3,
+    7,
+    4,
+    TO_DATE('15-04-2020', 'DD-MM-YYYY'),
+    10,
+    'Kompletny brak obrazu z komputera, sprawdzone na 2 wyjœciach HDMI i 2 monitorach',
+    'Spalona karta graficzna, wymiana na now¹.'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    2,
+    6,
+    5,
+    TO_DATE('10-05-2020', 'DD-MM-YYYY'),
+    10,
+    'Polecenie do³o¿enia koœci pamiêci RAM, aby osi¹gn¹æ 16GB RAM (obecnie 8GB), polecenie do³o¿enia drugiego dysku o pojemnoœci 2TB',
+    'Zakupiono i do³o¿ono koœæ RAMu o pojemnoœci 8GB, do³o¿ono dysk o pojemnoœci 2TB'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    9,
+    5,
+    6,
+    TO_DATE('20-05-2020', 'DD-MM-YYYY'),
+    10,
+    'Laptop zalany kaw¹, nie w³¹cza siê',
+    'Zwarcie uk³adu zasilania, uk³ad zasilania do wymiany'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    6,
+    4,
+    7,
+    TO_DATE('01-06-2020', 'DD-MM-YYYY'),
+    7,
+    'Polecenie skompletowania i budowy stacji komputerowej przeznaczonej do grania w gry wideo, maksymalny bud¿et 4000 z³. System wymagany przez klienta: Windows 10',
+    'Skompletowano i z³o¿ono komputer. Zainstalowano wskazany system operacyjny.'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    1,
+    5,
+    8,
+    TO_DATE('03-06-2020', 'DD-MM-YYYY'),
+    10,
+    'Polecenie wyczyszczenia laptopa',
+    'Laptop zosta³ otworzony i wyczyszczony z zabrudzeñ, za³o¿ona zosta³a te¿ nowa pasta na procesorze.'
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    3,
+    4,
+    9,
+    TO_DATE('5-06-2020', 'DD-MM-YYYY'),
+    3,
+    'Komputer przesta³ siê w³¹czaæ',
+    null
+);
 
+INSERT INTO services  (id, service_type, employee_id, customer_id, created_at, status, customer_description, service_description) 
+VALUES (
+    services_seq.nextval, 
+    2,
+    5,
+    10,
+    TO_DATE('09-06-2020', 'DD-MM-YYYY'),
+    5,
+    'Bateria w laptopie starcza na 20 minut u¿ytkowania bez pod³¹czenia zasilacza, polecenie wymiany baterii na now¹',
+    null
+);
 
+/*
+    Uzupe³nienie tabeli PRICINGS przyk³adowymi danymi
+*/
 
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    1,
+    50,
+    'Diagnoza'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    1,
+    50,
+    'Wymiana pasty termoprzewodz¹cej'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    2,
+    20,
+    'Za³o¿enie folii ochronnej'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    3,
+    50,
+    'Diagnoza'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    3,
+    50,
+    'Reinstalacja systemu'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    4,
+    50,
+    'Diagnoza'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    4,
+    50,
+    'Wymiana podzespo³ów'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    5,
+    50,
+    'Do³o¿enie podzespo³ów'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    6,
+    100,
+    'Diagnoza'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    7,
+    100,
+    'Z³o¿enie stacji komputerowej i instalacja systemu'
+);
+
+INSERT INTO pricings  (id, service_id, value, description) 
+VALUES (
+    pricings_seq.nextval, 
+    8,
+    100,
+    'Czyszczenie i nowa pasta'
+);
+
+/*
+    Uzupe³nienie tabeli ITEM_ORDERS przyk³adowymi danymi
+*/
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    1,
+    'Thermal Grizzly Kryonaut 1g',
+    8,
+    1,
+    35
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    2,
+    '3mk Flexible Glass do Xiaomi Redmi Note 8 Pro',
+    12,
+    1,
+    39
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    4,
+    'Gigabyte GeForce GTX 1660 SUPER OC 6GB GDDR6',
+    2,
+    1,
+    1199
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    5,
+    'HyperX 8GB (1x8GB) 2666MHz CL15 Impact Black',
+    5,
+    1,
+    179
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    5,
+    'Seagate BARRACUDA 2TB 7200obr. 256MB',
+    1,
+    1,
+    299
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'AMD Ryzen 5 3600',
+    3,
+    1,
+    849
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'ASRock Fatal1ty B450 Gaming K4',
+    4,
+    1,
+    459
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'PNY 16GB (2x8GB) 3200MHz CL16 XLR8 Gaming',
+    5,
+    1,
+    399
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'ASRock Radeon RX 5600 XT Challenger D OC 6GB GDDR6',
+    2,
+    1,
+    1529
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'SilentiumPC Regnum RG6V TG Pure Black',
+    6,
+    1,
+    269
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'SilentiumPC Supremo M2 550W 80 Plus Gold',
+    7,
+    1,
+    309
+);
+
+INSERT INTO item_orders  (id, service_id, product_name, product_category, quantity, unit_price) 
+VALUES (
+    item_orders_seq.nextval, 
+    7,
+    'Plextor 512GB 2,5" SATA SSD M8VC',
+    1,
+    1,
+    299
+);
 
 
