@@ -113,3 +113,35 @@ FROM service_types LEFT JOIN services ON service_types.id = services.service_typ
 GROUP BY service_types.id, service_types.name
 ORDER BY service_types.id;
 
+-- W jakim stanie znajduje siê konkretna us³uga
+SELECT services.id, status_types.name 
+FROM services INNER JOIN status_types ON services.status = status_types.id
+WHERE services.id = 10;
+
+-- Us³ugi przypisane do konkretnego pracownika (wyszukiwanie po imieniu i nazwisku)
+SELECT services.id, services.customer_description, services.service_description, services.status, services.service_type
+FROM services INNER JOIN employees ON services.employee_id = employees.id
+WHERE employees.first_name LIKE 'Ashley' AND employees.last_name LIKE 'Rice'
+ORDER BY services.id;
+
+-- Zlecenie danego klienta (wyszukiwanie po imieniu i nazwisku)
+SELECT services.id, services.customer_description, services.service_description, services.status, services.service_type
+FROM services INNER JOIN customers ON services.customer_id = customers.id
+WHERE customers.first_name LIKE 'Eleanor' AND customers.last_name LIKE 'Dixon'
+ORDER BY services.id;
+
+-- Liczba us³ug wykonywanych przez konkretnych pracowników
+SELECT employees.first_name, employees.last_name, COUNT(services.id) AS number_of_services
+FROM employees LEFT JOIN services ON employees.id = services.employee_id
+GROUP BY employees.first_name, employees.last_name
+ORDER BY number_of_services DESC;
+
+-- Liczba us³ug o danym statusie
+SELECT status_types.name, COUNT(services.id) AS number_of_services
+FROM status_types LEFT JOIN services ON services.status = status_types.id
+GROUP BY status_types.name
+ORDER BY number_of_services DESC;
+
+/*
+    Zapytania ³¹cz¹ce (JOIN) trzy tabele
+*/
