@@ -1,0 +1,16 @@
+Projekt zostaje przedstawiony na ocenę 3
+
+1. Baza powinna zawierać przynajmniej 10 tabel. - baza zawiera 10 tabel/spełnione
+
+2. Każda tabela powinna być w relacji przynajmniej z jedną z pozostałych tabel. - spełnione
+
+3. Każdy atrybut powinien posiadać przynajmniej jeden z więzów integralności. - prawie wszystkie atrybuty posiadają więzy integralności, jedynie dwa atrybuty (services.service_description i contracts.expires_date) nie posiadają żadnych jawnych więzów integralności z przyczyn zastosowania tych atrybutów
+
+4. Każda tabela powinna mieć minimum 10 rekordów składowych. - spełnione
+
+5. Do schematu przygotowane są zapytania, które mają być według przewidywań projektu
+bazy najczęściej wykonywane.
+◦ min 10 zapytań wybierających – projekcie - spełnione
+◦ min 10 selekcji - spełnione
+◦ min 10 zapytań łączących (JOIN) dwie tabele - spełnione
+◦ min 10 zapytań łączących (JOIN) trzy tabele - 

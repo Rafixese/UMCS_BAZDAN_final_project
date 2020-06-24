@@ -1,0 +1,177 @@
+contract_types
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        contract_name   napis(30)   nazwa rodzaju umowy, np. umowa o pracę,
+        
+    Ograniczenia integralnościowe:
+        id              klucz główny
+        contract_name   nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE)
+						
+contracts
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        contract_type   liczba      identyfikator typu umowy z tabeli contract_types
+        signed_date     data        data podpisania umowy
+        expires_date    data        data wygaśnięcia umowy
+        salary          liczba      wartość wypłaty
+        job_title       napis       nazwa stanowiska
+        
+    Ograniczenia integralnościowe:
+        id              klucz główny
+        contract_type   klucz obcy,
+                        nie może być pusty (NOT NULL)
+        signed_date     nie może być pusty (NOT NULL)
+        expires_date
+        salary          nie może być pusty (NOT NULL)
+        job_title       nie może być pusty (NOT NULL)
+		
+employees
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        first_name      napis       imię pracownika
+        last_name       napis       nazwisko pracownika
+        phone           napis       numer telefonu
+        email           napis       adres email
+        pesel           napis       nr pesel
+        sex             litera      płeć: m - mężczyzna, k - kobieta
+        manager_id      liczba      identyfikator przełożonego, relacja zwrotna do tabeli employees
+        contract_id     liczba      identyfikator umowy z tabeli contracts
+        
+    Ograniczenia integralnościowe:
+        id              klucz główny
+        first_name      nie może być pusty (NOT NULL)
+        last_name       nie może być pusty (NOT NULL)
+        phone           nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE)
+                        musi składać się tylko z cyfr (CHECK)
+        email           nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE),
+                        musi pasować do wyrażenia regularnego '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$'
+        pesel           nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE),
+                        musi składać się tylko z cyfr (CHECK)
+        sex             nie może być pusty (NOT NULL),
+                        musi należeć do zbioru ('M', 'K') (CHECK)
+        manager_id      klucz obcy
+        contract_id     klucz obcy
+                        nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE)
+						
+customers
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        first_name      napis       imię klienta
+        last_name       napis       nazwisko klienta
+        phone           napis       numer telefonu
+        email           napis       adres email
+        
+    Ograniczenia integralnościowe:
+        id              klucz główny
+        first_name      nie może być pusty (NOT NULL)
+        last_name       nie może być pusty (NOT NULL)
+        phone           nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE)
+                        musi składać się tylko z cyfr (CHECK)
+        email           nie może być pusty (NOT NULL),
+                        musi być unikalny (UNIQUE),
+                        musi pasować do wyrażenia regularnego '^[A-Za-z]+[A-Za-z0-9.]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$'
+						
+service_types
+    
+    Pola tabeli:
+        id      liczba      identyfikator
+        name    napis       nazwa czynności serwisowej
+        
+    Ograniczenia integralnościowe:
+        id          klucz główny
+        name        nie może być pusty (NOT NULL),
+                    musi być unikalny (UNIQUE)
+					
+status_types
+    
+    Pola tabeli:
+        id      liczba      identyfikator
+        name    napis       nazwa statusu
+        
+    Ograniczenia integralnościowe:
+        id          klucz główny
+        name        nie może być pusty (NOT NULL),
+                    musi być unikalny (UNIQUE)
+					
+services
+    
+    Pola tabeli:
+        id                      liczba      identyfikator
+        service_type            liczba      identyfikator typu czynności serwisowej z tabeli service_types
+        employee_id             liczba      identyfikator pracownika odpowiedzialnego za daną czynność serwisową
+        customer_id             liczba      identyfikator klienta, który zgłosił potrzebę serwisu
+        created_at              date        data zgłoszenia serwisu
+        status                  liczba      identyfikator statusu serwisu z tabeli status_types
+        customer_description    napis       opis usterki lub czynności serwisowej do wykonania
+        service_description     napis       opis przeprowadzonych czynności przez serwisanta
+        
+    Ograniczenia integralnościowe:
+        id                      klucz główny
+        service_type            klucz obcy,
+                                nie może być pusty (NOT NULL)
+        employee_id             klucz obcy,
+                                nie może być pusty (NOT NULL)
+        customer_id             klucz obcy,
+                                nie może być pusty (NOT NULL)
+        created_at              nie może być pusty (NOT NULL),
+        status                  klucz obcy,
+                                nie może być pusty (NOT NULL)
+        customer_description    nie może być pusty (NOT NULL)
+        service_description     
+		
+pricings
+    
+    Pola tabeli:
+        id              liczba      identyfikator
+        service_id      liczba      identyfikator serwisu, do którego należy rekord wyceny czynności serwisowej
+        value           liczba      cena czynności serwisowej
+        description     napis       krótki opis czynności serwisowej
+        
+    Ograniczenia integralnościowe:
+        id              klucz główny
+        service_id      klucz obcy
+                        nie może być pusty (NOT NULL)
+        value           nie może być pusty (NOT NULL)
+        description     nie może być pusty (NOT NULL)
+
+product_categories
+    
+    Pola tabeli:
+        id      liczba      identyfikator
+        name    napis       nazwa kategorii
+        
+    Ograniczenia integralnościowe:
+        id          klucz główny
+        name        nie może być pusty (NOT NULL),
+                    musi być unikalny (UNIQUE)
+
+item_orders
+    
+    Pola tabeli:
+        id                  liczba      identyfikator
+        service_id          liczba      identyfikator serwisu, do którego należy rekord zamówienia części
+        product_name        napis       nazwa produktu
+        product_category    liczba      identyfikator kategorii z tabeli product_categories
+        quantity            liczba      liczba sztuk produktu
+        unit_price          liczba      cena za sztukę
+        
+    Ograniczenia integralnościowe:
+        id                  klucz główny
+        service_id          klucz obcy,
+                            nie może być pusty (NOT NULL)
+        product_name        nie może być pusty (NOT NULL)
+        product_category    klucz obcy,
+                            nie może być pusty (NOT NULL)
+        quantity            nie może być pusty (NOT NULL)
+        unit_price          nie może być pusty (NOT NULL)
+

@@ -145,3 +145,13 @@ ORDER BY number_of_services DESC;
 /*
     Zapytania ³¹cz¹ce (JOIN) trzy tabele
 */
+
+-- Typ umowy i stanowisko dla ka¿dego pracownika (dla aktualnie posiadaj¹cych umowê)
+SELECT employees.first_name, employees.last_name, contracts.job_title, contract_types.contract_name
+FROM employees 
+INNER JOIN contracts ON employees.contract_id = contracts.id 
+INNER JOIN contract_types ON contracts.contract_type = contract_types.id
+WHERE contracts.expires_date is NULL OR SYSDATE - contracts.expires_date < 0;
+
+
+
