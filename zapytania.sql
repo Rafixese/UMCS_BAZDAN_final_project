@@ -153,5 +153,55 @@ INNER JOIN contracts ON employees.contract_id = contracts.id
 INNER JOIN contract_types ON contracts.contract_type = contract_types.id
 WHERE contracts.expires_date is NULL OR SYSDATE - contracts.expires_date < 0;
 
+-- Kto obs³ugiwa³ klienta przy konkretnym zamówieniu
+SELECT customers.first_name AS customer_first_name, customers.last_name AS customer_last_name, employees.first_name AS employee_first_name, employees.last_name AS employee_last_name
+FROM customers
+INNER JOIN services ON customers.id = services.customer_id
+INNER JOIN employees ON services.employee_id = employees.id
+WHERE services.id = 5;
 
+-- Typy serwisów wykonywanych przez konkretnego pracownika i ich liczba
+SELECT service_types.name, COUNT(services.id) AS number_of_services
+FROM service_types
+INNER JOIN services ON service_types.id = services.service_type
+INNER JOIN employees ON services.employee_id = employees.id
+WHERE employees.first_name = 'Ashley' AND employees.last_name = 'Rice'
+GROUP BY service_types.name;
 
+-- Typy us³ug posiadaj¹ce status != 'Zakoñczono' i odpowiadaj¹ce im numery serwisów
+SELECT service_types.name, services.id
+FROM service_types
+INNER JOIN services ON service_types.id = services.service_type
+INNER JOIN status_types ON services.status = status_types.id
+WHERE status_types.name != 'Zakoñczono';
+
+-- Œrednia wycena dla typów serwisów
+SELECT service_types.name, AVG(pricings.value) AS avg_pricing
+FROM service_types
+INNER JOIN services ON service_types.id = services.service_type
+INNER JOIN pricings ON services.id = pricings.service_id
+GROUP BY service_types.name;
+
+-- Wydatki klientów na "robocizne"
+SELECT customers.first_name, customers.last_name, SUM(pricings.value) AS sum_value
+FROM customers
+INNER JOIN services ON customers.id = services.customer_id
+INNER JOIN pricings ON services.id = pricings.service_id
+GROUP BY customers.first_name, customers.last_name
+ORDER BY sum_value DESC;
+
+-- Wydatki klientów na czêœci
+SELECT customers.first_name, customers.last_name, SUM(item_orders.quantity * item_orders.unit_price) AS sum_value
+FROM customers
+INNER JOIN services ON customers.id = services.customer_id
+INNER JOIN item_orders ON services.id = item_orders.service_id
+GROUP BY customers.first_name, customers.last_name
+ORDER BY sum_value DESC;
+
+-- Iloœæ serwisów o okreœlonych statusach w danych typach serwisów
+SELECT service_types.name, status_types.name, COUNT(services.id) AS num_of_services
+FROM service_types
+INNER JOIN services ON service_types.id = services.service_type
+INNER JOIN status_types ON services.status = status_types.id
+GROUP BY service_types.name, status_types.name
+ORDER BY service_types.name, status_types.name;

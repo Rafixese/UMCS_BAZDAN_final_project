@@ -13,4 +13,4 @@ bazy najczęściej wykonywane.
 ◦ min 10 zapytań wybierających – projekcie - spełnione
 ◦ min 10 selekcji - spełnione
 ◦ min 10 zapytań łączących (JOIN) dwie tabele - spełnione
-◦ min 10 zapytań łączących (JOIN) trzy tabele - 
+◦ min 10 zapytań łączących (JOIN) trzy tabele - 8/10
